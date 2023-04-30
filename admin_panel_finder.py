@@ -1,24 +1,27 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*-
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+import argparse
 
-from urllib2 import Request, urlopen, URLError, HTTPError
+parser = argparse.ArgumentParser(
+					prog='admin_panel_finder',
+					description='Find admin panels of webpages (Make sure to use a proxy or the firewall might block you!)',
+					epilog='Original made by GitHub User "bdblackhat", Current Version is by GitHub User "SpamixOfficial"')
+parser.add_argument("page", help="The webpage you want to search (ex : example.com or www.example.com )")
+args = parser.parse_args()
 
-def Space(j):
-	i = 0
-	while i<=j:
-		print " ",
-		i+=1
+nums = 0
 
-
-def findAdmin():
-	f = open("link.txt","r");
-	link = raw_input("Enter Site Name \n(ex : example.com or www.example.com ): ")
-	print "\n\nAvilable links : \n"
+def findAdmin(link=args.page):
+	global nums
+	f = open("link.txt","r")
+	print("\n\nAvailable links : \n")
 	while True:
+		nums += 1
+		print(nums)
 		sub_link = f.readline()
 		if not sub_link:
 			break
-		req_link = "http://"+link+"/"+sub_link
+		req_link = f"http://{link}/{sub_link}"
 		req = Request(req_link)
 		try:
 			response = urlopen(req)
@@ -27,14 +30,6 @@ def findAdmin():
 		except URLError as e:
 			continue
 		else:
-			print "OK => ",req_link
+			print(f"OK => {req_link}")
 
-def Credit():
-	Space(9); print "#####################################"
-	Space(9); print "#   +++ Admin Panel Finder v1 +++   #"
-	Space(9); print "#     Script by Illûmïnåté Ðëmøñ    #"
-	Space(9); print "#    Bangladesh Black Hat Hackers   #"
-	Space(9); print "#####################################"
-
-Credit()
 findAdmin()
